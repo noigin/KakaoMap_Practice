@@ -8,6 +8,22 @@
 <!-- jqueryCDN -->
 <script  src="https://code.jquery.com/jquery-3.5.1.min.js"  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="  crossorigin="anonymous"></script>
 <style>
+	.erase {width: auto; height: auto;}
+
+	.sido {
+		width: auto;
+		height: 30px;
+		padding-left: 10px;
+		padding-right: 10px;
+		background: rgb(67, 77, 104);
+		border: 2px solid rgb(67, 77, 104);
+		border-radius: 30px;
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	.mark {
 	border-radius:10px; border: 1px solid blue; color: white; font-size: 14px; width: 30px; height: 30px; background: blue
 	}
@@ -28,27 +44,6 @@
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=683cef37c8e822b967d6997468818ca4"></script>
 	<script>
-
-	let sidoCenter = [
-		['서울특별시',126.989704304000043,37.554652018000070],
-		['부산광역시',129.056755798000040,35.202582395000036],
-		['대구광역시',128.563210852000111,35.832479974000080],
-		['인천광역시',126.379741421000062,37.581222317000027],
-		['광주광역시',126.833350815000017,35.158504522000044],
-		['대전광역시',127.391941359000043,36.342568954000058],
-		['울산광역시',129.236540311000113,35.556393074000027],
-		['세종특별자치시',127.256688456000006,36.563423479000051],
-		['경기도',127.176049491000072,37.537718695000081],
-		['강원도',128.298985815000037,37.727934259000051],
-		['충청북도',127.828405814000007,36.740672952000068],
-		['충청남도',126.845523122000031,36.532614624000075],
-		['전라북도',127.138558927000076,35.718709316000059],
-		['전라남도',126.895755980000104,34.876114237000024],
-		['경상북도',128.746789721000027,36.350308934000054],
-		['경상남도',128.259754123000107,35.325284010000075],
-		['제주특별자치도',126.551568295000038,33.389842603000034],
-	]
-	
 	
 	let data = [
 			[33.450701, 126.570667, 'A'],
@@ -63,8 +58,6 @@
 			[33.440701, 126.570667, 'G'],
 			[33.455701, 126.563667, 'I'],
 		]	
-	
-	let globaloverlay = [];
 	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
@@ -95,14 +88,23 @@
 			var level = map.getLevel();
 			
 			switch (level) {
-			case 6:
-				overfive();
-				break;
 			case 5:
 				underfive();
 				break;
-			case 10, 11:
-			
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				overfive();
+				break;
+			case 10:
+			case 11:
+				sidoLevel();
+				break;
+			case 12:
+			case 13:
+			case 14:
+				map.setLevel(11);
 				break;
 			default:
 				break;
@@ -141,10 +143,10 @@
 	overfive();
 	
 	function overfive() {
-	  $('.circle').parent().remove();
+	  $('.erase').parent().remove();
 		
   	  for(i = 0; i < data.length; i++) {
-  	 		let content = '<div class="mark">' + data[i][2] +'</div>';
+  	 		let content = '<div class="erase"><div class="mark">' + data[i][2] +'</div></div>';
  		   	    	
 			// 커스텀 오버레이가 표시될 위치입니다 
 			let position = new kakao.maps.LatLng(data[i][0], data[i][1]);  
@@ -159,24 +161,23 @@
 		
 			// 커스텀 오버레이를 지도에 표시합니다
 			customOverlay.setMap(map);
-			globaloverlay.push(customOverlay);
+// 			globaloverlay.push(customOverlay);
     	}
 	}
 	
 	function underfive() {
-		$('.mark').parent().remove();
+		$('.erase').parent().remove();
 		
 		let bounds = map.getBounds();
 		let swLatLng = bounds.getSouthWest();		// 남서
 		let neLatLng = bounds.getNorthEast();		// 북동
-		console.log('swLatLng : ', swLatLng);
 		let count = 0;
-	  		console.log('data[0][1] : ', data[0][1]);
-	  		console.log('swLatLng[1] : ', swLatLng.La);
-	  		console.log('neLatLng[1] : ', neLatLng.La);
-	  		console.log('data[0][0] : ', data[0][0]);
-	  		console.log('swLatLng[0] : ', swLatLng.Ma);
-	  		console.log('neLatLng[0] : ', neLatLng.Ma);
+// 	  		console.log('data[0][1] : ', data[0][1]);
+// 	  		console.log('swLatLng[1] : ', swLatLng.La);
+// 	  		console.log('neLatLng[1] : ', neLatLng.La);
+// 	  		console.log('data[0][0] : ', data[0][0]);
+// 	  		console.log('swLatLng[0] : ', swLatLng.Ma);
+// 	  		console.log('neLatLng[0] : ', neLatLng.Ma);
 	  		
 	  	for(i = 0; i < data.length; i++) {
 	  		if(data[i][0] > swLatLng.Ma && data[i][0] < neLatLng.Ma) {
@@ -187,7 +188,7 @@
 	  		
 	  	}
 	  	
-		let content1 = '<div class="circle">' + count +'</div>';
+		let content1 = '<div class="erase"><div class="circle">' + count +'</div></div>';
 	    let center1 = map.getCenter();	
 		// 커스텀 오버레이가 표시될 위치입니다 
 // 		let position = new kakao.maps.LatLng(center1[0], center1[1]);  
@@ -204,6 +205,47 @@
 		customOverlay1.setMap(map);
 	}
 	
+	function sidoLevel() {
+		$('.erase').parent().remove();
+		
+		let sidoCenter = [
+			['서울특별시',126.989704304000043,37.554652018000070],
+			['부산광역시',129.056755798000040,35.202582395000036],
+			['대구광역시',128.563210852000111,35.832479974000080],
+			['인천광역시',126.379741421000062,37.581222317000027],
+			['광주광역시',126.833350815000017,35.158504522000044],
+			['대전광역시',127.391941359000043,36.342568954000058],
+			['울산광역시',129.236540311000113,35.556393074000027],
+			['세종특별자치시',127.256688456000006,36.563423479000051],
+			['경기도',127.176049491000072,37.337718695000081],
+			['강원도',128.298985815000037,37.727934259000051],
+			['충청북도',127.828405814000007,36.740672952000068],
+			['충청남도',126.845523122000031,36.532614624000075],
+			['전라북도',127.138558927000076,35.718709316000059],
+			['전라남도',126.895755980000104,34.876114237000024],
+			['경상북도',128.746789721000027,36.350308934000054],
+			['경상남도',128.259754123000107,35.325284010000075],
+			['제주특별자치도',126.551568295000038,33.389842603000034],
+		];
+		
+	  	  for(i = 0; i < sidoCenter.length; i++) {
+			 	let sido_content = '<div class="erase"><div class="sido">' + sidoCenter[i][0] +'</div></div>';
+	 		   	    	
+				// 커스텀 오버레이가 표시될 위치입니다 
+				let sido_position = new kakao.maps.LatLng(sidoCenter[i][2], sidoCenter[i][1]);  
+
+				// 커스텀 오버레이를 생성합니다
+				let sido_Overlay = new kakao.maps.CustomOverlay({
+			   	 position: sido_position,
+			   	 content: sido_content,
+		    		xAnchor: 0.3,
+		   			yAnchor: 0.91
+				});
+			
+				// 커스텀 오버레이를 지도에 표시합니다
+				sido_Overlay.setMap(map);
+	    	}
+	}
 	</script>
 </body>
 </html>
