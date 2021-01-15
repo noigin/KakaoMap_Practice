@@ -208,6 +208,8 @@
 	function sidoLevel() {
 		$('.erase').parent().remove();
 		
+		// define		: Korean_1985_Korea_Central_Belt
+		// projection	: GCS_WGS_1984
 		let sidoCenter = [
 			['서울특별시',126.989704304000043,37.554652018000070],
 			['부산광역시',129.056755798000040,35.202582395000036],
