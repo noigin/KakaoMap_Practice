@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- jqueryCDN -->
+<script  src="https://code.jquery.com/jquery-3.5.1.min.js"  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="  crossorigin="anonymous"></script>
 <style>
 	.mark {
 	border-radius:10px; border: 1px solid blue; color: white; font-size: 14px; width: 30px; height: 30px; background: blue
@@ -27,6 +29,26 @@
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=683cef37c8e822b967d6997468818ca4"></script>
 	<script>
 
+	let sidoCenter = [
+		['서울특별시',126.989704304000043,37.554652018000070],
+		['부산광역시',129.056755798000040,35.202582395000036],
+		['대구광역시',128.563210852000111,35.832479974000080],
+		['인천광역시',126.379741421000062,37.581222317000027],
+		['광주광역시',126.833350815000017,35.158504522000044],
+		['대전광역시',127.391941359000043,36.342568954000058],
+		['울산광역시',129.236540311000113,35.556393074000027],
+		['세종특별자치시',127.256688456000006,36.563423479000051],
+		['경기도',127.176049491000072,37.537718695000081],
+		['강원도',128.298985815000037,37.727934259000051],
+		['충청북도',127.828405814000007,36.740672952000068],
+		['충청남도',126.845523122000031,36.532614624000075],
+		['전라북도',127.138558927000076,35.718709316000059],
+		['전라남도',126.895755980000104,34.876114237000024],
+		['경상북도',128.746789721000027,36.350308934000054],
+		['경상남도',128.259754123000107,35.325284010000075],
+		['제주특별자치도',126.551568295000038,33.389842603000034],
+	]
+	
 	
 	let data = [
 			[33.450701, 126.570667, 'A'],
@@ -46,7 +68,8 @@
 	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
-			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+// 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+			center : new kakao.maps.LatLng(35.202582, 129.056756), // 지도의 중심좌표
 			level : 6
 		// 지도의 확대 레벨
 		};
@@ -73,11 +96,13 @@
 			
 			switch (level) {
 			case 6:
-				console.log(6);
 				overfive();
 				break;
 			case 5:
 				underfive();
+				break;
+			case 10, 11:
+			
 				break;
 			default:
 				break;
@@ -116,7 +141,7 @@
 	overfive();
 	
 	function overfive() {
-
+	  $('.circle').parent().remove();
 		
   	  for(i = 0; i < data.length; i++) {
   	 		let content = '<div class="mark">' + data[i][2] +'</div>';
@@ -139,9 +164,7 @@
 	}
 	
 	function underfive() {
-		for(j = 0; j < globaloverlay.length; j++) {
-			globaloverlay[j].setMap(null);
-		}
+		$('.mark').parent().remove();
 		
 		let bounds = map.getBounds();
 		let swLatLng = bounds.getSouthWest();		// 남서
@@ -166,7 +189,6 @@
 	  	
 		let content1 = '<div class="circle">' + count +'</div>';
 	    let center1 = map.getCenter();	
-	    console.log('center1 : ', center1);
 		// 커스텀 오버레이가 표시될 위치입니다 
 // 		let position = new kakao.maps.LatLng(center1[0], center1[1]);  
 
